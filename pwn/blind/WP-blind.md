@@ -34,7 +34,7 @@ switch(toupper(ch)) {
 
 ```c
 int main() {
-	char namebuf[0x8];
+    char namebuf[0x8];
     char *ptr = namebuf;
 ...
     do {
