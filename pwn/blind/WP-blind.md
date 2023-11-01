@@ -154,7 +154,7 @@ io.interactive()
 
 大家的解法和官方解相差无几。一些队伍leak libc地址后查到了版本是`Debian GLIBC 2.31-13+deb11u7`，可以不用dump直接打ROP。
 
-星盟的师傅非常牛逼，在不dump程序的情况下爆破到了ROP gadget。具体做法是：
+星盟的师傅非常厉害，在不dump程序的情况下爆破到了ROP gadget。具体做法是：
 
 1. 由于8A（name往低8字节）存放了返回地址，所以把name修改为栈上泄露的elf地址，通过name-0x8位置爆破前面泄露出来的elf函数附近的ret。
 2. 通过布置栈（将返回地址放到name[0x30]），爆破csu的pop6_gadget。
