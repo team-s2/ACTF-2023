@@ -1,0 +1,429 @@
+---
+- id: Init
+  trigger: Initialization
+  once: true
+  actions:
+    - id: UpdateVariableLimits
+      updates:
+        player.energy: [0, 100]
+    - id: UpdateVariables
+      updates:
+        elapsedHour: 0
+        hour: 8
+        day: 1
+        player.energy: 100
+        player.examLevel: 0
+        player.hourSkipped: 0
+# Game tick loop
+- id: GameTick
+  trigger: Tick
+  actions:
+    - id: UpdateVariables
+      updates:
+        elapsedHour: elapsedHour + 1
+        hour: (hour % 24) + 1
+        day: floor((elapsedHour + 9) / 24) + 1
+    - id: TriggerEvents
+      triggers:
+        - id: HourBegin
+# Game begin event
+- id: TheBeginning
+  trigger: HourBegin
+  once: true
+  actions:
+    - id: DisplayChoices
+      message: message.beginning
+      choices:
+        - message: message.acceptCTF
+          actions:
+            - id: DisplayMessage
+              message: message.acceptedCTF
+              confirm: message.excited
+            - id: DisplayMessage
+              message: message.examNotice
+              confirm: message.ok
+            - id: SetStatus
+              statusId: freshness
+              on: true
+        - message: message.declineCTF
+          actions:
+            - id: EndGame
+              message: message.declinedCTF
+              confirm: message.restartNewTimeline
+              winning: true
+      confirm: message.excited
+  
+- id: HourSkipUpdate
+  trigger: HourBegin
+  actions:
+  - id: UpdateVariables
+    updates:
+      player.hourSkipped: max(player.hourSkipped - 1, 0)
+# Energy
+# -10 for day time
+- id: EneryUpdateDayTime
+  trigger: HourBegin
+  conditions:
+  - id: Expression
+    expression: elapsedHour > 1 && hour >= 7 && hour < 23 && player.hourSkipped === 0
+  actions:
+  - id: UpdateVariables
+    updates:
+      player.energy: player.energy - 10
+# -20 for night time
+- id: EneryUpdateNightTime
+  trigger: HourBegin
+  conditions:
+  - id: Expression
+    expression: elapsedHour > 1 && (hour < 7 || hour >= 23) && player.hourSkipped === 0
+  actions:
+  - id: UpdateVariables
+    updates:
+      player.energy: player.energy - 20
+# may have addition energy change
+- id: EneryUpdateEffective
+  trigger: HourBegin
+  conditions:
+  - id: Expression
+    expression: elapsedHour > 1 && player.hourSkipped === 0
+  actions:
+  - id: UpdateVariables
+    updates:
+      player.energy: player.energy + calcEffectValue('player.energyBoost', 0)
+- id: LostAllEnergy
+  trigger: HourBegin
+  conditions:
+    - id: Expression
+      expression: player.energy <= 0
+  actions:
+    - id: EndGame
+      message: message.lostAllEnergy
+      confirm: message.restart
+      winning: false
+# exam event
+- id: Qualify
+  trigger: HourBegin
+  once: true
+  conditions:
+    - id: Expression
+      # 19:00 pm - 8:00 = 11
+      expression: elapsedHour === 11
+  actions:
+    - id: CoinFlip
+      probability: player.examLevel * 0.25
+      success:
+        - id: DisplayMessage
+          message: message.examPassed
+          confirm: message.great
+        - id: UpdateVariables
+          updates:
+            # exam is tired for sure
+            player.energy: player.energy - 10
+            player.hourSkipped: 1
+      fail:
+        - id: EndGame
+          winning: false
+          message: message.examFailed
+          confirm: message.restart
+
+# main choices
+# insight -> draft exploit -> tuned exploit -> submitted flag
+- id: HourBeginTasks
+  trigger: HourBegin
+  conditions:
+    - id: Expression
+      expression: player.hourSkipped === 0
+  actions:
+    - id: DisplayChoices
+      message: message.newHour
+      choices:
+        - message: message.studyExam
+          requirement: elapsedHour < 11
+          actions:
+            - id: UpdateVariables
+              updates:
+                player.examLevel: player.examLevel + 1
+                # study is tired
+                player.energy: player.energy - 10
+            - id: Switch
+              branches:
+                - condition: player.examLevel < 4
+                  actions:
+                    - id: DisplayMessage
+                      message: message.examLevelUp
+                      confirm: message.great
+                - condition: 1
+                  actions:
+                    - id: DisplayMessage
+                      message: message.examLevelMax
+                      confirm: message.great
+        - message: message.tryCTF
+          requirement: elapsedHour <= 48
+          actions:
+            - id: CoinFlip
+              # TODO
+              # 1. if the player is energetic, possibly
+              # 2. if the player try many times, possibly
+              probability: 0.60
+              success:
+                - id: GiveItem
+                  itemId: insight
+                  amount: 1
+                - id: DisplayRandomMessage
+                  messages:
+                    - message.gainInsight1
+                    - message.gainInsight2
+                  confirm: message.great
+                # good insight is encouraing
+                - id: CoinFlip
+                  probability: 0.2
+                  success:
+                    - id: DisplayMessage
+                      message: message.goodInsight
+                      confirm: message.encouraging
+                    - id: UpdateVariables
+                      updates:
+                        player.energy: player.energy + 10
+              fail:
+                - id: DisplayRandomMessage
+                  messages:
+                    - message.noInsight1
+                    - message.noInsight2
+                  confirm: message.oops
+                # dis-encouraging
+                - id: UpdateVariable
+                  variable: player.energy
+                  value: player.energy - 5
+        - message: message.workOnInsight
+          requirement: itemCount('insight') > 0 && elapsedHour <= 48
+          actions:
+            - id: CoinFlip
+              # same, energy and try time
+              # most insight should gets to exploit
+              probability: 0.8
+              success:
+                - id: DisplayMessage
+                  message: message.gainDraftExp
+                  confirm: message.soundsInteresting
+                - id: GiveItem
+                  itemId: draftExp
+                  amount: 1
+              fail:
+                - id: DisplayRandomMessage
+                  messages:
+                    - message.badInsight1
+                    - message.badInsight2
+                    - message.badInsight3
+                  confirm: message.unfortunate
+            - id: GiveItem
+              itemId: insight
+              amount: -1
+        - message: message.workOnDraftExp
+          requirement: itemCount('draftExp') > 0 && elapsedHour <= 48
+          actions:
+            - id: CoinFlip
+              # same, energy and try time
+              probability: 0.7
+              success:
+                - id: DisplayMessage
+                  message: message.gainTunedExp
+                  confirm: message.soundsInteresting
+                - id: UpdateItemAmounts
+                  updates:
+                    draftExp: -1
+                    tunedExp: 1
+              fail:
+                - id: DisplayRandomMessage
+                  messages:
+                    - message.noTunedExp1
+                    - message.noTunedExp2
+                  confirm: message.unfortunate
+                - id: UpdateVariable
+                  variable: player.energy
+                  value: player.energy - 5
+        - message: message.workTunedExp
+          requirement: itemCount('tunedExp') > 0 && elapsedHour <= 48
+          actions:
+            - id: CoinFlip
+              # same, energy and try time, and flag (more flag then harder)
+              probability: 0.7
+              success:
+                - id: DisplayMessage
+                  message: message.gainFlag
+                  confirm: message.great
+                - id: UpdateItemAmounts
+                  updates:
+                    submittedFlag: 1
+                    tunedExp: -1
+              fail:
+                - id: DisplayRandomMessage
+                  messages:
+                    - message.noflag1
+                    - message.noflag2
+                    - message.noflag3
+                  confirm: message.damn
+                - id: UpdateVariables
+                  updates:
+                    player.energy: player.energy - 5
+        - message: message.resubmitFlag
+          requirement: itemCount('wrongFlag') > 0 && elapsedHour < 48
+          actions:
+            - id: DisplayMessage
+              message: message.resubmitComplete
+              confirm: message.hopeAccepted
+            - id: UpdateItemAmounts
+              updates:
+                resubmittedFlag: 1
+                wrongFlag: -1
+        # day time -> slack off
+        - message: message.slackOff
+          requirement: "hour < 23 && hour >= 7"
+          actions:
+            # random decide bonus energy
+            - id: Random
+              groups:
+                - weight: 1
+                  actions:
+                    - id: DisplayRandomMessage
+                      messages:
+                        - message.caughtSlackOff1
+                        - message.caughtSlackOff2
+                      confirm: message.oops
+                - weight: 2
+                  actions:
+                    - id: DisplayMessage
+                      message: message.slackOffSuccess
+                      confirm: message.great
+                    - id: UpdateVariable
+                      variable: player.energy
+                      value: player.energy + 5
+            - id: UpdateVariables
+              updates:
+                player.energy: player.energy + 35
+            - id: SetStatus
+              statusId: exhaustion
+              on: false
+        # night time -> sleep
+        - message: message.nap
+          requirement: "!(hour < 23 && hour >= 7)"
+          actions:
+          - id: DisplayMessage
+            message: message.napSuccess
+            confirm: message.great
+          - id: UpdateVariables
+            updates:
+              player.energy: 100
+              player.hourSkipped: 3
+          - id: SetStatus
+            statusId: exhaustion
+            on: false
+
+# flag check events
+- id: flagCheck
+  trigger: HourBegin
+  conditions:
+    - id: Expression
+      expression: itemCount('submittedFlag') >= 1
+  actions:
+    - id: CoinFlip
+      probability: 0.6
+      success:
+        - id: DisplayMessage
+          message: message.flagAccepted
+          confirm: message.bravo
+        - id: UpdateItemAmounts
+          updates:
+            submittedFlag: -1
+            flag: 1
+        - id: UpdateVariables
+          updates:
+            player.energy: player.energy + 10
+        - id: CoinFlip
+          probability: 0.5 - (elapsedHour / 48)
+          success:
+            - id: DisplayMessage
+              message: message.firstblood
+              confirm: message.encouraging
+            - id: SetStatus
+              statusId: firstblood
+              on: true
+      fail:
+        - id: DisplayRandomMessage
+          messages:
+            - message.flagRejected1
+            - message.flagRejected2
+          confirm: message.unfortunate
+        - id: UpdateItemAmounts
+          updates:
+            submittedFlag: -1
+            wrongFlag: 1
+        - id: UpdateVariable
+          variable: player.energy
+          value: player.energy - 10
+- id: ResubmittedFlagCheck
+  trigger: HourBegin
+  conditions:
+    - id: Expression
+      expression: itemCount('resubmittedFlag') >= 1
+  actions:
+    - id: CoinFlip
+      probability: 0.85
+      success:
+        - id: DisplayMessage
+          message: message.resubmittedFlagAccepted
+          confirm: message.bravo
+        - id: UpdateItemAmounts
+          updates:
+            resubmittedFlag: -1
+            flag: 1
+        - id: UpdateVariables
+          updates:
+            player.energy: player.energy + 10
+      fail:
+        - id: DisplayRandomMessage
+          messages:
+            - message.resubmittedFlagRejected
+          confirm: message.unfortunate
+        - id: UpdateItemAmounts
+          updates:
+            resubmittedFlag: -1
+            wrongFlag: 1
+        - id: UpdateVariable
+          variable: player.energy
+          value: player.energy - 20
+# tired
+- id: Exhaustion
+  trigger: HourBegin
+  conditions:
+  - id: Expression
+    expression: "!hasStatus('exhaustion') && player.energy < 40"
+  actions:
+  - id: DisplayMessage
+    message: message.exhaustion
+    confirm: message.sucks
+  - id: SetStatus
+    statusId: exhaustion
+    on: true
+# captain comments
+# TODO: unhappy captain
+- id: ExamReminder
+  trigger: HourBegin
+  once: true
+  conditions:
+    - id: Expression
+      expression: elapsedHour >= 6 && player.examLevel <= 2
+  actions:
+    - id: DisplayMessage
+      message: message.examReminder
+      confirm: message.gotit
+# CTF over
+- id: Timeout
+  trigger: HourBegin
+  conditions:
+    - id: Expression
+      expression: elapsedHour > 48
+  actions:
+  - id: EndGame
+    message: message.gameover
+    confirm: message.restart
+    winning: true

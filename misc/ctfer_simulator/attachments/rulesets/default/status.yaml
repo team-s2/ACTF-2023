@@ -1,0 +1,38 @@
+---
+status:
+  - id: firstYear
+    duration: 12
+    effects:
+      player.hopeBoost:
+        relative: false
+        amount: 1
+  - id: callForPapers
+    duration: 6
+  - id: brokenEquipment
+    duration: 1
+  - id: upgradedEquipment
+    duration: Infinity
+    effects:
+      player.experimentBoost:
+        relative: false
+        amount: 0.3
+  - id: cloudStorage
+    duration: Infinity
+  - id: exhaustion
+    duration: Infinity
+    effects:
+      player.hopeBoost:
+        relative: false
+        amount: -5
+  - id: lateYearAnxiety
+    duration: Infinity
+    effects:
+      player.hopeBoost:
+        relative: false
+        amount: -1
+  - id: unhappyAdvisor
+    duration: Infinity
+    effects:
+      player.hopeBoost:
+        relative: false
+        amount: -5

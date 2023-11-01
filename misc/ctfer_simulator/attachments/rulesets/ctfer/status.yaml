@@ -1,0 +1,26 @@
+---
+status:
+  - id: freshness
+    duration: 4
+    effects:
+      player.energyBoost:
+        relative: false
+        amount: 5
+  - id: firstblood
+    duration: 2
+    effects:
+      player.energyBoost:
+        relative: false
+        amount: 10
+  - id: coffee
+    duration: 3
+    effects:
+      player.energyBoost:
+        relative: false
+        amount: 20
+  - id: exhaustion
+    duration: Infinity
+    effects:
+      player.energyBoost:
+        relative: false
+        amount: -10

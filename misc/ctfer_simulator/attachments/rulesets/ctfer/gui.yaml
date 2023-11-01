@@ -1,0 +1,36 @@
+---
+statsBar:
+  items:
+    - text: ui.hopeMeter
+      side: left
+      updateTrigger:
+        variables: ["player.energy"]
+      conditionalStyles:
+        - condition: player.energy > 40
+          styleClasses: ["normal"]
+        - condition: player.energy <= 40 && player.energy > 20
+          styleClasses: ["warning"]
+        - condition: player.energy <= 20
+          styleClasses: ["critical"]
+    - text: ui.timeMeter
+      side: right
+      updateTrigger:
+        variables: ["hour", "day"]
+itemList:
+  title: ui.progress
+  raritySpecificStyles:
+    - minRarity: 10
+      styleClasses: ["r_legendary"]
+    - minRarity: 6
+      maxRarity: 9
+      styleClasses: ["r_rare"]
+    - minRarity: 3
+      maxRarity: 5
+      styleClasses: ["r_uncommon"]
+statusList:
+  title: ui.status
+footer:
+  preamble:
+  buttons:
+    - text: ui.credit
+      url: https://github.com/morriswmz/phd-game

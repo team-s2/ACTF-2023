@@ -1,0 +1,122 @@
+---
+# ui
+ui.ok: Ok.
+ui.progress: "Progress:"
+ui.status: "Status:"
+ui.credit: Credit
+ui.hopeMeter: Energy {{player.energy}}/100
+ui.timeMeter: Day {{day}} Time {{hour}}:00
+
+# item
+item.insight: Insight
+item.insight.description: Your insight that can help you to build the solver exploit
+item.draftExp: Draft Exploit
+item.draftExp.description: One scratch exploit that even without any comment.
+item.tunedExp: Tuned Exploit
+item.tunedExp.description: The exploit that received complete debugging and polish
+item.flag: Flag
+item.flag.description: Precious flag, all CTFer wants it.
+item.submittedFlag: Submitted Flag
+item.submittedFlag.description: Flag that submmited, energy it will be accepted.
+item.resubmittedFlag: Resubmiited Flag
+item.resubmittedFlag.description: Flag that submmited more than once, energy it will be accepted.
+item.wrongFlag: Wrong Flag
+item.wrongFlag.description: Flag that not accepted, mixed with CTFer's anxiety.
+
+# status
+status.freshness: Feel Freshness
+status.freshness.description: "It's all fresh in the beginning, **+5 energy** every hour."
+status.firstblood: First Blood Happiness
+status.firstblood.description: "Win a firstblood, so happy, so energetic, **+10 energy** every hour"
+status.coffee: Coffee
+status.coffee.description: "Drank super coffee, no afraid of exhaustion, **+20 energy** every hour"
+status.exhaustion: Exhaustion
+status.exhaustion.description: "**-10 extra energy**. Time to slow down and take a break."
+
+
+# events
+
+## - TheBeginning
+message.beginning: Attention, your CTF team captain ask you to play **ACTF** this weekend. Will you participate in it?
+message.acceptCTF: Let's rock and roll.
+message.acceptedCTF: You open your desktop and are required to solve and submit **as much flags as possible** to win this CTF.
+message.declineCTF: Sorry, I am so busy.
+message.declinedCTF: You **declined this CTF**. Perhaps it is a better choice in this timeline.
+
+## - HourBeginTasks
+message.newHour: Let us check what to do now
+## --- CTF
+message.tryCTF: Choose one CTF challenge and try it.
+message.gainInsight1: This challenge seems familiar, you suddenly gained a **insight** about solving it.
+message.gainInsight2: After scratching your head and tired goolging, you came up with a **insight**.
+message.noInsight1: This challenge seems too weird and you felt a waste of time with nothing valuable coming back into your mind.
+message.noInsight2: Your proxy exited abnormally, and you lost track of what you have Googled for this challenge.
+message.goodInsight: Your captain thinks the found insight sounds interesting and promising. You feel encouraged.
+message.workOnInsight: Work on the gained insight.
+message.badInsight1: After discussing with your teammate, you find out that your insight is wrong completely.
+message.badInsight2: After trying it for a while, you felt that this may not be the expected insight from the challenge author.
+message.badInsight3: It seems that you have misunderstood this challenge and your insight is wrong.
+message.insightNotWorking: It turned out that this insight is not working. Time to try another one.
+message.gainDraftExp: Your insight seems work as expected! You obtained a **draft exploit**.
+message.workOnDraftExp: Work on the draft exploit.
+message.gainTunedExp: You developed a **tuned exploit** which works fine locally.
+message.noTunedExp1: Your exploit just did not work as expected, you need more time to find out what happened.
+message.noTunedExp2: Your captain pointed out a problem in your exploit. You need to rethink and rewrite one.
+message.workTunedExp: Work on the tuned exploit and hack remote.
+message.gainFlag: You got one **precious flag** and submitted to the platform!
+message.noflag1: Damn, your exploit did not work as exptected on remote, maybe is the offset issue.
+message.noflag2: Despite your efforts, the remote seems broken and you did not get your flag.
+message.noflag3: What a ptiy, the remote proved to be somehow different with your local environment, you need to spend more efforts.
+message.flagAccepted: Wonderful! your flag has been **ACCEPTED** and you gain points for your team.
+message.flagRejected1: Oops, your flag is rejected by the platform and you have no idea what happened.
+message.flagRejected2: What a pity, your flag is proved to be a fake one, you have to check out where the real one is.
+message.resubmitFlag: Work on the rejected flag.
+message.resubmitComplete: After the battle with the challenge author, you revise your code and submit the newly gained flag.
+message.resubmittedFlagAccepted: Cool! this time your flag is correct.
+message.resubmittedFlagRejected: Fxxk, the platform informs again that your flag is wrong.
+message.firstblood: Woh, you get the first blood of this challenge, and come with extra points.
+message.gameover: The CTF is over, you are awesome.
+
+## --- slack
+message.slackOff: Slack off.
+message.caughtSlackOff1: Your captain caught you slacking off and reminded you that the team's ranking is currently bad.
+message.caughtSlackOff2: Your teammate asked you for help but found you were not engaged in the competition actively.
+message.slackOffSuccess: You relaxed for a while and regained some energy.
+
+message.nap: Take a nap.
+message.napSuccess: You got a good sleep and feel energetic.
+
+## - exhaust
+message.exhaustion: You began to feel exhausted and found it difficult to focus.
+message.stayup: It's very late and every one seems sleepy, so hard for solving CTF now. 
+
+## - EXAM
+message.examNotice: "DEPARTMENT NOTICE: All students must participate in the midterm exam at 19:00 p.m., which is important."
+message.studyExam: Study for the midterm exam
+message.examLevelUp: You felt more confident in passing the midterm exam.
+message.examLevelMax: You felt **very confident** in passing the midterm exam.
+message.examPassed: You **PASSED** the midterm exam.
+message.examFailed: You **FAILED** the midterm exam.
+
+## - captain
+message.examReminder: Your captain kindly remind you that **do not forget to prepare for your exam**.
+
+## - fail
+message.lostAllEnergy: You lost all energy and decide **not to play CTF anymore**.
+
+## - event confrom
+message.excited: Excited.
+message.ok: Okay.
+message.gotit: Got it.
+message.great: Great.
+message.oops: Oops.
+message.damn: Damn.
+message.restart: Let us travel back in time and start again.
+message.restartNewTimeline: Let us travel to a different timeline and start again.
+message.encouraging: That is encouraging.
+message.shame: That's a shame.
+message.sucks: That sucks.
+message.bravo: Bravo
+message.soundsInteresting: Sounds interesting.
+message.unfortunate: That is unfortunate.
+message.hopeAccepted: Hope it will be accepted this time.
