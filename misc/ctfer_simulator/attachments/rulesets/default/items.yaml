@@ -1,0 +1,22 @@
+---
+items:
+  - id: idea
+    rarity: 1
+  - id: preliminaryResult
+    rarity: 2
+  - id: majorResult
+    rarity: 3
+  - id: figure
+    rarity: 3
+  - id: paper
+    rarity: 10
+  - id: submittedPaper
+    rarity: 6
+  - id: resubmittedPaper
+    rarity: 6
+  - id: rejectedPaper
+    rarity: 6
+  - id: conferencePaper
+    rarity: 6
+  - id: submittedConfPaper
+    rarity: 5

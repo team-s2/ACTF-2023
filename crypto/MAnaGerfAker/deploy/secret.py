@@ -1,0 +1,1 @@
+flag = 'ACTF{9982a1ff-ef42-4cfc-8daa-940d9a275f0e}'

@@ -1,0 +1,16 @@
+---
+items:
+  - id: insight
+    rarity: 1
+  - id: draftExp
+    rarity: 2
+  - id: tunedExp
+    rarity: 3
+  - id: flag
+    rarity: 10
+  - id: submittedFlag
+    rarity: 6
+  - id: resubmittedFlag
+    rarity: 6
+  - id: wrongFlag
+    rairty: 6

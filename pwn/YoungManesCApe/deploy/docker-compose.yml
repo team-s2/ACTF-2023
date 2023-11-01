@@ -1,0 +1,10 @@
+version: "3"
+services:
+    youngman-escape:
+        build: .
+        restart: always
+        ports:
+            - "32106:9999"
+        volumes:
+            - ./dist:/dist
+            - ./hashcash:/hashcash
