@@ -1,0 +1,9 @@
+version: '3'
+services:
+  craftcms:
+    build: 
+      context: ./src
+      dockerfile: dockerfile
+    container_name: craftcms
+    ports:
+      - 8889:80

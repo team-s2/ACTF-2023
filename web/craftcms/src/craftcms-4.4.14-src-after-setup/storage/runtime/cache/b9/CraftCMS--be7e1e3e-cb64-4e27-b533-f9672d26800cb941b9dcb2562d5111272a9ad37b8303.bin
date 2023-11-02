@@ -1,0 +1,1 @@
+a:2:{i:0;s:32:"@craft/web/assets/installer/dist";i:1;O:25:"yii\caching\TagDependency":3:{s:4:"tags";a:1:{i:0;s:12:"assetmanager";}s:4:"data";a:1:{s:78:"CraftCMS--be7e1e3e-cb64-4e27-b533-f9672d26800c390942d8972983268022030fb7b56fcb";s:21:"0.18431900 1697523802";}s:8:"reusable";b:0;}}

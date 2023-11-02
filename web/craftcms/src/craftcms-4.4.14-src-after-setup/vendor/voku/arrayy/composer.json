@@ -1,0 +1,49 @@
+{
+  "name": "voku/arrayy",
+  "description": "Array manipulation library for PHP, called Arrayy!",
+  "keywords": [
+    "array",
+    "Arrayy",
+    "manipulation",
+    "utility",
+    "methods",
+    "helpers",
+    "utils"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lars Moelleken",
+      "email": "lars@moelleken.org",
+      "homepage": "https://www.moelleken.org/",
+      "role": "Maintainer"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "ext-json": "*",
+    "symfony/polyfill-mbstring": "~1.0",
+    "phpdocumentor/reflection-docblock": "~4.3 || ~5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0 || ~7.0 || ~9.0"
+  },
+  "support": {
+    "docs": "https://voku.github.io/Arrayy/",
+    "issues": "https://github.com/voku/Arrayy/issues",
+    "source": "https://github.com/voku/Arrayy"
+  },
+  "autoload": {
+    "psr-4": {
+      "Arrayy\\": "src/"
+    },
+    "files": [
+      "src/Create.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Arrayy\\tests\\": "tests/"
+    }
+  }
+}

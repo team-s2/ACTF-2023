@@ -1,0 +1,132 @@
+v5.0.7 (2022-01-23)
+
+- update "Portable ASCII" from v1.x -> v2.0
+
+v5.0.6 (2021-12-08)
+
+- update "Portable UTF8" from v5 -> v6
+
+v5.0.5 (2019-12-13)
+
+- update "Portable ASCII" from v1.3 -> v1.4
+
+
+v5.0.4 (2019-12-13)
+
+- fix performance issue v2
+
+
+v5.0.3 (2019-12-13)
+
+- fix performance issue & make string expanding optional
+
+
+v5.0.2 (2019-10-15)
+
+- fix for stop-words for e.g. "de_CH"
+
+
+v5.0.1 (2019-10-14)
+
+- update "Portable ASCII" from v1.2 -> v1.3
+
+
+v5.0.0 (2019-09-03)
+
+- use "en" as default language
+- use "Portable ASCII" for much better performance
+
+
+v4.1.1 (2019-09-03)
+
+- optimize regex
+- use "preg_quote" | thanks @cbj4074
+- fix duplicate code
+
+
+v4.1.0 (2019-01-12)
+
+- fix "maxLength" usage
+- use phpcs fixer
+- add support for "Kazakh" and "Slovak"
+
+
+v4.0.0 (2017-12-23)
+
+- update "Portable UTF8" from v4 -> v5
+
+  -> this is a breaking change without API-changes - but the requirement
+  from "Portable UTF8" has been changed (it no longer requires all polyfills from Symfony)
+
+
+v3.0.0 (2017-12-01)
+
+- drop support for PHP < 7.0
+- use "strict_types"
+
+
+v2.3.1 (2017-06-25)
+
+- fix logic of "add_array_to_separator()"
+- "remove apostrophes which are not used as quotes around a string"
+
+
+v2.3.0 (2017-05-22)
+
+- use "voku/stop-words" for the URLify::$remove_list
+- fix "vietnamese"-language-code ('vn' => 'vi')
+
+
+v2.2.0
+
+- add more languages && update docs
+- add more tests
+
+
+v2.1.2
+
+- clean more invalid UTF-8 chars + UTF-8 BOM
+
+
+v2.1.1
+
+- fix "currencies" for "de"
+
+
+v2.1.0
+
+- optimized displaying from "Symbols" and "Currencies"
+
+
+v2.0.0
+
+- use "UTF8"-vendor v3
+
+
+v1.2.2
+
+- optimized performance via static-cache for the cache-key
+
+
+v1.2.1
+
+- fixed phpdoc from "URLify::remove_words()"
+- added "URLify::reset_remove_list"
+
+
+v1.2
+
+- fixed string-length parameter (disble "substr" via "$length" < 0)
+- added namespace (voku\helper\URLify)
+- added static cache for the "language-array"
+
+
+v1.1.1
+
+- replaced "UTF8::to_ascii()" with "UTF8::str_transliterate()"
+
+
+v1.1
+
+- added dynamic seperator via "URLify::to_ascii()"
+- added "str_transliterate()" from "Portable UTF-8"
